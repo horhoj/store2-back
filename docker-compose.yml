@@ -28,10 +28,10 @@ services:
     build:
       context: docker/php_fpm
     environment:
-#      XDEBUG_CONFIG: "remote_host=192.168.220.1 mode=debug client_port = 9000"
       PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
       - ./src:/var/www
+      - ./composer:/.composer
     networks:
       - internal
   #database
@@ -60,15 +60,3 @@ services:
 #      - mariadb
 #    networks:
 #      - internal
-  #npm
-#  node:
-#    build:
-#      context: docker/nodejs
-#    user: "node"
-#    working_dir: /home/node/app
-#    environment:
-#      - NODE_ENV=development
-#      #- NODE_ENV=production
-#    volumes:
-#      - ./src:/home/node/app
-#    tty: true

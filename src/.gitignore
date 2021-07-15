@@ -3,7 +3,9 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
+/var
+.phplint-cache
+#.env
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
