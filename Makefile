@@ -13,8 +13,8 @@ db-create:
 
 
 laravel-permission:
-	-chmod -R 755 ./src/
-	-chmod -R 777 ./src/storage ./src/backend/bootstrap/cache
+	-sudo chmod -R 755 ./src/
+	-sudo chmod -R 777 ./src/storage ./src/backend/bootstrap/cache
 
 laravel-run-phpunit:
 	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm ./vendor/bin/phpunit
@@ -34,6 +34,9 @@ laravel-cache-clear: laravel-permission
 laravel-migrate-and-seed:
 	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan migrate:fresh
 	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan db:seed
+
+laravel-passport-install:
+	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan passport:install
 
 composer-install:
 		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer install
@@ -73,22 +76,24 @@ permission-777:
 console:
 	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm /bin/bash
 
-dev-lint:
+linter:
 	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer lint
 
-dev-cs-fix:
+cs-fix:
 	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer cs-fix
 
-dev-lint: dev-cs-fix dev-lint
+dev-lint: cs-fix linter
 
-dev-support: laravel-support-ide lint
+dev-support: laravel-support-ide dev-lint
 
 dev-test: laravel-run-phpunit
 
 dev-install: composer-install
 
-dev-db: laravel-migrate-and-seed
+dev-db: laravel-migrate-and-seed laravel-passport-install
 
 dev-routes: laravel-router-list
 
 dev-cache-clear: laravel-cache-clear
+
+dev-permission: laravel-permission
