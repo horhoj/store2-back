@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Types;
 
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class APIIndexRequestParams
      */
     public function getSearch(): string
     {
-        return $this->request['search'] ?? '';
+        return $this->request->query('search') ?? '';
     }
 
     /**
@@ -39,7 +41,7 @@ class APIIndexRequestParams
      */
     public function getSortField(): string
     {
-        return $this->request['sort_field'] ?? 'id';
+        return $this->request->query('sort_field') ?? 'id';
     }
 
     /**
@@ -47,7 +49,7 @@ class APIIndexRequestParams
      */
     public function getSortAsc(): string
     {
-        return $this->request['sort_asc'] ?? '1';
+        return $this->request->query('sort_asc') ?? '1';
     }
 
     /**
@@ -55,6 +57,9 @@ class APIIndexRequestParams
      */
     public function getPerPage(): int
     {
-        return $this->request['per_page'] ?? 10;
+        $per_page = $this->request->query('per_page');
+        $res = intval($per_page);
+
+        return $res > 0 ? $res : 10;
     }
 }
