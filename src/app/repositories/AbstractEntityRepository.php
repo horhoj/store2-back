@@ -112,7 +112,7 @@ abstract class AbstractEntityRepository
         }
 
         return [
-            'id' => $entity->id
+            'id' => $entity->id,
         ];
     }
 
@@ -126,7 +126,7 @@ abstract class AbstractEntityRepository
         $this->entity->findOrFail($id)->delete();
 
         return [
-            'id' => $id
+            'id' => $id,
         ];
     }
 }

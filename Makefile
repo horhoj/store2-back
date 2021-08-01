@@ -6,6 +6,8 @@ db_password=xuburuFantik@1212
 
 #LARAVEL
 
+init: docker-up composer-install db-create laravel-db-prepare laravel-permission
+
 db-create:
 	sleep 60
 	docker-compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
@@ -38,11 +40,17 @@ laravel-migrate-and-seed:
 laravel-passport-install:
 	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan passport:install
 
-composer-install:
-		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer install
+
 
 laravel-router-list:
 	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan route:list
+
+composer-install:
+		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer install
+
+composer-dump-autoload:
+		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer dump-autoload
+
 
 #all
 docker-up: docker-down

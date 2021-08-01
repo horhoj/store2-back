@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -13,20 +14,27 @@ class ProductFactory extends Factory
      * @var string
      */
     protected $model = Product::class;
+    private $index = 0;
 
     /**
      * Define the model's default state.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
-    public function definition()
+
+    public function definition(): array
     {
+        $this->index++;
+
         return [
-            'title' => 'Товар ' . random_int(10, 99),
+            'id'          => $this->index,
+            'title'       => 'Товар ' . random_int(10, 99),
             'description' => 'Описание товара ' . random_int(10, 99),
-            'options' => random_int(1000, 9999),
+            'options'     => strval(random_int(1000, 9999)),
+            'created_at'  => null,
+            'updated_at'  => null,
         ];
     }
 }
