@@ -31,5 +31,6 @@ Route::prefix('v1')->namespace('App\Http\Controllers\API')->group(function () {
 
         Route::apiResource('/products', 'ProductController');
         Route::apiResource('/categories', 'CategoryController');
+        Route::apiResource('/contacts', 'ContactController');
     });
 });
