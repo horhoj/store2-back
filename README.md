@@ -7,8 +7,6 @@ BACKEND часть\
 
 Посмотреть как работает можно здесь
 
-http://89.108.88.53:83
-
 #Зависимости
 >docker docker-compose make linux
 
