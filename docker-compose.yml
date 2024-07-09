@@ -23,6 +23,8 @@ services:
       - php_fpm
     networks:
       - internal
+    depends_on:
+      - mariadb
   #php
   php_fpm:
     build:
@@ -34,6 +36,8 @@ services:
       - ./composer:/.composer
     networks:
       - internal
+    depends_on:
+      - mariadb
   #database
   mariadb:
     build:

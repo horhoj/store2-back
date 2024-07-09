@@ -9,14 +9,13 @@ db_password=xuburuFantik@1212
 init: docker-up composer-install db-create laravel-db-prepare laravel-permission
 
 db-create:
-	sleep 60
 	docker-compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 	docker-compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name_test) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
 
 laravel-permission:
-	-sudo chmod -R 755 ./src/
-	-sudo chmod -R 777 ./src/storage ./src/backend/bootstrap/cache
+	- chmod -R 755 ./src/
+	- chmod -R 777 ./src/storage ./src/backend/bootstrap/cache
 
 laravel-run-phpunit:
 	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm ./vendor/bin/phpunit
@@ -75,10 +74,10 @@ clear-src:
 clear-all: clear-nginx-logs clear-db clear-src
 
 permission-755:
-	sudo chmod -R 755 ./src/
+	chmod -R 755 ./src/
 
 permission-777:
-	sudo chmod -R 777 ./src/
+	chmod -R 777 ./src/
 
 
 console:
