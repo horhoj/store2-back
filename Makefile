@@ -9,8 +9,8 @@ db_password=xuburuFantik@1212
 init: docker-up composer-install db-create laravel-db-prepare laravel-permission
 
 db-create:
-	docker-compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-	docker-compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name_test) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+	docker compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+	docker compose exec mariadb mysql --user=$(db_user) --password=$(db_password) -e "CREATE DATABASE IF NOT EXISTS $(db_name_test) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
 
 laravel-permission:
@@ -18,49 +18,49 @@ laravel-permission:
 	- chmod -R 777 ./src/storage ./src/backend/bootstrap/cache
 
 laravel-run-phpunit:
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm ./vendor/bin/phpunit
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm ./vendor/bin/phpunit
 
 laravel-support-ide:
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:generate
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:meta
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:models
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:generate
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:meta
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan ide-helper:models
 
 laravel-cache-clear: laravel-permission
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan cache:clear
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan route:clear
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan view:clear
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan config:clear
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan config:cache
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan cache:clear
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan route:clear
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan view:clear
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan config:clear
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan config:cache
 
 laravel-migrate-and-seed:
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan migrate:fresh
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan db:seed
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan migrate:fresh
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan db:seed
 
 laravel-passport-install:
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan passport:install
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm php artisan passport:install
 
 laravel-db-prepare: laravel-migrate-and-seed laravel-passport-install
 
 laravel-router-list:
-	docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan route:list
+	docker compose exec --user $(shell id -u):$(shell id -g) php_fpm php artisan route:list
 
 composer-install:
-		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer install
+		docker compose exec --user $(shell id -u):$(shell id -g) php_fpm composer install
 
 composer-dump-autoload:
-		docker-compose exec --user $(shell id -u):$(shell id -g) php_fpm composer dump-autoload
+		docker compose exec --user $(shell id -u):$(shell id -g) php_fpm composer dump-autoload
 
 
 #all
 docker-up: docker-down
-	docker-compose up -d --build
+	docker compose up -d --build
 
 docker-log: docker-down
-	docker-compose up --build
+	docker compose up --build
 
 docker-down:
-	docker-compose stop
-	docker-compose down
+	docker compose stop
+	docker compose down
 
 clear-nginx-logs:
 	-sudo rm -R ./nginx_logs/* ./nginx_logs/.*
@@ -81,13 +81,13 @@ permission-777:
 
 
 console:
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm /bin/bash
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm /bin/bash
 
 linter:
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer lint
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer lint
 
 cs-fix:
-	docker-compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer cs-fix
+	docker compose exec --user $(shell id -u):$(shell id -g)  php_fpm composer cs-fix
 
 dev-lint: cs-fix linter
 

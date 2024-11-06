@@ -6,7 +6,7 @@ BACKEND часть\
 
 список роутов можно получить через 
 
->make routes
+>make dev-routes
 
 #Зависимости
 >docker docker-compose make linux
